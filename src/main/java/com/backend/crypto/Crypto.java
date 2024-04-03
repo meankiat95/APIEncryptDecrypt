@@ -1,6 +1,4 @@
-package com.crypto;
-
-import com.crypto.AesUtil;
+package com.backend.crypto;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -15,6 +13,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+
+import com.backend.crypto.AesUtil;
 
 public class Crypto {
 	static void myMethod() {
