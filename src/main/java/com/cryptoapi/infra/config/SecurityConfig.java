@@ -1,4 +1,4 @@
-package com.infra.config;
+package com.cryptoapi.infra.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.infra.service.AuthenticationFilter;
+import com.cryptoapi.infra.service.AuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity

@@ -1,4 +1,4 @@
-package com.infra.service;
+package com.cryptoapi.infra.service;
 
 import java.util.Collection;
 

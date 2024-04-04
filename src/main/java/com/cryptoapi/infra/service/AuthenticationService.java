@@ -1,4 +1,4 @@
-package com.infra.service;
+package com.cryptoapi.infra.service;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;

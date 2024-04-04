@@ -1,4 +1,4 @@
-package com.backend.crypto;
+package com.cryptoapi.backend;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
