@@ -18,8 +18,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-      http.csrf(AbstractHttpConfigurer::disable)
-          .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.requestMatchers("/**").authenticated())
+      http.csrf(AbstractHttpConfigurer::disable);
+      http.csrf().disable();
+      http.headers().frameOptions().disable();
+      http
+      	   .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.requestMatchers("/**").authenticated())
           .httpBasic(Customizer.withDefaults())
           .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
