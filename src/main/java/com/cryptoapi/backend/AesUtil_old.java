@@ -9,6 +9,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -16,12 +17,12 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
-public class AesUtil {
+public class AesUtil_old {
     private final int keySize;
     private final int iterationCount;
     private final Cipher cipher;
     
-    public AesUtil(int keySize, int iterationCount) {
+    public AesUtil_old(int keySize, int iterationCount) {
         this.keySize = keySize;
         this.iterationCount = iterationCount;
         try {
@@ -39,8 +40,13 @@ public class AesUtil {
     	    
     	    Cipher cipher = Cipher.getInstance(algorithm);
     	    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-    	    byte[] cipherText = cipher.doFinal(input.getBytes());
-    	    return base64(cipherText);
+    	    byte[] cipherTextByte = cipher.doFinal(input.getBytes());
+    	    
+    	    
+    	    String cipherTextStr = new String(cipherTextByte, StandardCharsets.UTF_8);
+    	      System.out.println("cipherTextStr=====>" + cipherTextStr);
+    	    
+    	    return base64(cipherTextByte);
     	}
     public static String decrypt(String algorithm, String cipherText, SecretKey key,
     	    IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException,
@@ -50,6 +56,7 @@ public class AesUtil {
     	    Cipher cipher = Cipher.getInstance(algorithm);
     	    cipher.init(Cipher.DECRYPT_MODE, key, iv);
     	    byte[] plainText = base64(cipherText);
+    	    System.out.println("cipherTextStr=====>" + (plainText).toString());
     	    return new String(plainText);
     	}
     /*

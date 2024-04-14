@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.cryptoapi.infra.model.Application;
+import com.cryptoapi.infra.model.Application_old;
 
 
 @Configuration
