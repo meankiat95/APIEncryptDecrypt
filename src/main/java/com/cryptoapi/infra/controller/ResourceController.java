@@ -21,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -41,26 +40,10 @@ class ResourceController {
 	AuthenticationService as = new AuthenticationService();
 	@Value("${encryption.key}")
 	private String encryption_key_str;
-	
-	//Declared iv object as global - IV need not be secret. 
+
+	// Declared iv object as global - IV need not be secret.
 	IvParameterSpec ivParameterSpec = AESUtil.generateIv();
-	/*
-	 * @GetMapping("/{appname}") public ResponseEntity<List<Application>>
-	 * getAllApplications(@PathVariable String appname) {
-	 * System.out.println("getAllApplications");
-	 * 
-	 * try { List<Application> applications = new ArrayList<Application>();
-	 * 
-	 * if (appname == null) appRepository.findAll().forEach(applications::add); else
-	 * appRepository.findByapikeynameContaining("keyname1").forEach(applications::
-	 * add);
-	 * 
-	 * if (applications.isEmpty()) { return new
-	 * ResponseEntity<>(HttpStatus.UNAUTHORIZED); }
-	 * 
-	 * return new ResponseEntity<>(applications, HttpStatus.OK); } catch (Exception
-	 * e) { return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR); } }
-	 */
+
 	@PostMapping("/encrypt")
 	public ResponseEntity<?> encrypt(@RequestBody String requestBodyStr, @RequestHeader HttpHeaders headers)
 			throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException,
@@ -76,32 +59,31 @@ class ResourceController {
 		req_app.setAPIToken(headers.get("X-API-KEY").toString().replaceAll("[\\[\\]\\(\\)]", ""));
 		// Get plain text value from request body
 		String req_plaintext = jsonObject.getString("plaintext");
-
+		System.out.println("req_app.getApikeyname()" + req_app.getApikeyname());
+		
 		// Get from DB
 		List<Application> db_queried_applications = new ArrayList<Application>();
-		appRepository
-		.findByapikeynameContaining(req_app.getApikeyname()).forEach(db_queried_applications::add);
 
+		appRepository.findByapikeyname(req_app.getApikeyname()).forEach(db_queried_applications::add);
+		
+		// Check if app details can be queried from DB
+		if (db_queried_applications.isEmpty()) {
+			return new ResponseEntity<>("Invalid apikeyname.", HttpStatus.UNAUTHORIZED);
+		}
+		
 		// Encryption
-
-		//SecretKey key = AESUtil.generateKey(256);
 		SecretKey key = AESUtil.convertStringToSecretKeyto(encryption_key_str);
-		System.out.println("key==============>"+key.toString());
-		//String secretkeystr = AESUtil.convertSecretKeyToString(key);
-		//System.out.println(secretkeystr);
 		String encrypted_text = AESUtil.encrypt("AES/CBC/PKCS5Padding", req_plaintext, key, ivParameterSpec);
 
+		try {
 		Authentication authentication = AuthenticationService.tokenAuthenticated(db_queried_applications, req_app);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		/*
-		 * Authentication authentication = authenticationManager .authenticate(new
-		 * UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-		 * loginRequest.getPassword()));
-		 * 
-		 * ApiKeyAuthentication(AUTH_TOKEN, AuthorityUtils.NO_AUTHORITIES);
-		 */
+		}
+		catch (Exception exp) {       
+            return new ResponseEntity<>(exp.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
 
-		return new ResponseEntity<>(encrypted_text, HttpStatus.OK);
+		return new ResponseEntity<>("Encrypted string : " + encrypted_text, HttpStatus.OK);
 	}
 
 	@PostMapping("/decrypt")
@@ -119,32 +101,20 @@ class ResourceController {
 		// Get plain text value from request body
 		String req_ciphertext = jsonObject.getString("ciphertext");
 
-		// Get from DB
+		// Get application details from DB
 		List<Application> db_queried_applications = new ArrayList<Application>();
 		appRepository.findByapikeynameContaining(req_app.getApikeyname()).forEach(db_queried_applications::add);
 
 		// Decryption
-		System.out.println(encryption_key_str);
 		SecretKey key = AESUtil.convertStringToSecretKeyto(encryption_key_str);
-		System.out.println("key==============>"+key.toString());
-		
 		String decrypted_text = AESUtil.decrypt("AES/CBC/PKCS5Padding", req_ciphertext, key, ivParameterSpec);
-
+		try {
 		Authentication authentication = AuthenticationService.tokenAuthenticated(db_queried_applications, req_app);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		return new ResponseEntity<>(decrypted_text, HttpStatus.OK);
+		}
+		catch (Exception exp) {       
+            return new ResponseEntity<>(exp.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+		return new ResponseEntity<>("Decrypted string : " + decrypted_text, HttpStatus.OK);
 	}
-
-	@GetMapping("/home")
-	public String homeEndpoint() {
-		return "Baeldung !";
-	}
-	/*
-	 * @GetMapping("/api") public String apiEndpoint() { Application app = new
-	 * Application(); List<Application> applications = new ArrayList<Application>();
-	 * applications = app.findAll(); System.out.println(applications.toString());
-	 * return "API endpoint !"; }
-	 */
-
 }

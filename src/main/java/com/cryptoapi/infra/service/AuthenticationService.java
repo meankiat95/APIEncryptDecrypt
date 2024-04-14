@@ -1,10 +1,6 @@
 package com.cryptoapi.infra.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -19,8 +15,6 @@ public class AuthenticationService {
 	@Autowired
 	AppRepository appRepository;
 	private static final String AUTH_TOKEN_HEADER_NAME = "X-API-KEY";
-	private static final String AUTH_TOKEN = "Baeldung";
-
 	public static Authentication getAuthentication(HttpServletRequest request) {
 		String apiKey = request.getHeader(AUTH_TOKEN_HEADER_NAME);
 		/*
@@ -43,13 +37,12 @@ public class AuthenticationService {
 
 		// Value from DB
 		String db_apikey = db_queried_applications.get(0).getAPIToken();
-		String db_apikeyname = db_queried_applications.get(0).getApikeyname();
 		String db_appname = db_queried_applications.get(0).getAppname();
-		System.out.println("db_apikey ===========> " + db_apikey);
-		System.out.println("db_apikeyname ===========> " + db_apikeyname);
-		System.out.println("db_appname ===========> " + db_appname);
-
+		System.out.println("db_apikey==========>"+db_apikey);
+		
+		// Validate if APIToken from request is equals to from DB.
 		if (req_applications.getAPIToken().equals(db_apikey)) {
+			// Validate if App name from request is equals to from DB
 			if (!req_applications.getAppname().equals(db_appname)) {
 				System.out.println("NOT SAME");
 				throw new BadCredentialsException("Invalid App Name");
