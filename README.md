@@ -117,6 +117,7 @@ curl --location 'http://localhost:8080/api/decrypt' \
 }]'
 ```
 Exepected Result
+
 ![Exepected Result](./images/POST-Decrypt.png)
 
 ## Error Handling
