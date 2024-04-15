@@ -13,6 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,22 +54,26 @@ class ResourceController {
 
 		// Store all value into Application Object
 		Application req_app = new Application();
+		try {
 		req_app.setAppname(jsonObject.getString("appname"));
 		req_app.setApikeyname(jsonObject.getString("apikeyname"));
-		// Store API Token from request header
+		} catch (JSONException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+		
+		// Get API Token from request header
 		req_app.setAPIToken(headers.get("X-API-KEY").toString().replaceAll("[\\[\\]\\(\\)]", ""));
 		// Get plain text value from request body
 		String req_plaintext = jsonObject.getString("plaintext");
 		System.out.println("req_app.getApikeyname()" + req_app.getApikeyname());
 		
-		// Get from DB
+		// Query application details from DB
 		List<Application> db_queried_applications = new ArrayList<Application>();
-
 		appRepository.findByapikeyname(req_app.getApikeyname()).forEach(db_queried_applications::add);
 		
-		// Check if app details can be queried from DB
+		// Validation - Check if app details can be queried from DB
 		if (db_queried_applications.isEmpty()) {
-			return new ResponseEntity<>("Invalid apikeyname.", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>("Invalid APIKEYNAME.", HttpStatus.UNAUTHORIZED);
 		}
 		
 		// Encryption
@@ -94,17 +99,31 @@ class ResourceController {
 		JSONObject jsonObject = new JSONObject(requestBodyStr.replaceAll("[\\[\\]\\(\\)]", ""));
 		// Store all value into Application Object
 		Application req_app = new Application();
+		try {
 		req_app.setAppname(jsonObject.getString("appname"));
 		req_app.setApikeyname(jsonObject.getString("apikeyname"));
-		// Store API Token from request header
+		} catch (JSONException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+		
+		if (jsonObject.getString("apikeyname").isEmpty()){
+			
+		}
+		
+		// Get API Token from request header
 		req_app.setAPIToken(headers.get("X-API-KEY").toString().replaceAll("[\\[\\]\\(\\)]", ""));
 		// Get plain text value from request body
 		String req_ciphertext = jsonObject.getString("ciphertext");
 
-		// Get application details from DB
+		// Query application details from DB
 		List<Application> db_queried_applications = new ArrayList<Application>();
 		appRepository.findByapikeynameContaining(req_app.getApikeyname()).forEach(db_queried_applications::add);
 
+		// Validation - Check if app details can be queried from DB
+		if (db_queried_applications.isEmpty()) {
+			return new ResponseEntity<>("Invalid APIKEYNAME.", HttpStatus.UNAUTHORIZED);
+		}
+		
 		// Decryption
 		SecretKey key = AESUtil.convertStringToSecretKeyto(encryption_key_str);
 		String decrypted_text = AESUtil.decrypt("AES/CBC/PKCS5Padding", req_ciphertext, key, ivParameterSpec);
