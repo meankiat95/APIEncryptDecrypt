@@ -73,7 +73,8 @@ curl --location 'http://localhost:8080/api/encrypt' \
 }]'
 ```
 Exepected Result
-![](./images/POST-Encrypt.png)
+
+![Exepected Result](./images/POST-Encrypt.png)
 
 Error Handling: 
 
@@ -115,16 +116,14 @@ curl --location 'http://localhost:8080/api/decrypt' \
     "ciphertext": "FLw83lfs6Em0YXlClTH9FlslyN7ppWuVFb9VJ0EMcN2jET1zRenVN4VsOJo8V47V"
 }]'
 ```
-
-Exepected Result
-![](./images/POST-Decrypt.png)
+![Exepected Result](./images/POST-Decrypt.png)
 
 Error Handling: 
 
 | Status Code  | Response Message | 
 | ------------- | ------------- |
 | 401 (Unauthorized) | Invalid API Key Name |
-| 401 (Unauthorized) | Invalid App Name |
+| 401 (Unauthorized) | ![Invalid App Name](./images/InvalidAppName.png)| 
 | 401 (Unauthorized) | Invalid API Key |
 | 401 (Unauthorized) | JSONObject["apikeyname"] not found |
 
