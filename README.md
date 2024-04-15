@@ -118,14 +118,23 @@ curl --location 'http://localhost:8080/api/decrypt' \
 ```
 ![Exepected Result](./images/POST-Decrypt.png)
 
-Error Handling: 
+## Error Handling
 
 | Status Code  | Response Message | 
 | ------------- | ------------- |
 | 401 (Unauthorized) | Invalid API Key Name |
-| 401 (Unauthorized) | ![Invalid App Name](./images/InvalidAppName.png)| 
+| 401 (Unauthorized) | Invalid App Name| 
 | 401 (Unauthorized) | Invalid API Key |
 | 401 (Unauthorized) | JSONObject["apikeyname"] not found |
+
+### Invalid API Key Name
+![](./images/InvalidKeyName.png)
+### Invalid App Name
+![](./images/InvalidAppName.png)
+### Invalid API Key
+![](./images/InvalidAPIKey.png)
+### Invalid API Key Name
+![](./images/RequestBody_Missing_APIKeyName.png)
 
 ## Limitation
 
