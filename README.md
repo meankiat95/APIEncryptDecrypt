@@ -50,6 +50,7 @@ Step 1. To encrypt a plain text, please ensure that the following fields are cre
 Step 2. POST > http://localhost:8080/api/encrypt.
 
 Step 3. Add X-API-key to header. (API key from above configuration)
+![](./images/X-API-Key.png)
 
 Step 4. Copy paste the following request body (ContentType : application/json) similar to below: 
 ```
@@ -59,11 +60,29 @@ Step 4. Copy paste the following request body (ContentType : application/json) s
     "plaintext": "EPSCloud_DB_KEY_PASSWORD_IN_PLAINTEXT"
 }]
 ```
-Step 5. Error Handling: 
-Status code : 401 [Invalid API Key Name]
-Status code : 401 [Invalid App Name]
-Status code : 401 [Invalid API Key]
-Status code : 401  JSONObject["apikeyname"] not found.
+
+[Optional] Using curl to encrypt.
+```
+curl --location 'http://localhost:8080/api/encrypt' \
+--header 'Content-Type: application/json' \
+--header 'x-api-key: nLZg5i1E29cipjz' \
+--data '[{
+    "appname": "EPS-App",
+    "apikeyname": "EPS_cloud_db_key",
+    "plaintext": "EPSCloud_DB_KEY_PASSWORD_IN_PLAINTEXT"
+}]'
+```
+Exepected Result
+![](./images/POST-Encrypt.png)
+
+Error Handling: 
+
+| Status Code  | Response Message |
+| ------------- | ------------- |
+| 401 (Unauthorized) | Invalid API Key Name |
+| 401 (Unauthorized) | Invalid App Name |
+| 401 (Unauthorized) | Invalid API Key |
+| 401 (Unauthorized) | JSONObject["apikeyname"] not found |
 
 ### Decryption
 
@@ -75,6 +94,7 @@ Step 1. To decrypt a cipher text, please ensure that the following fields are cr
 Step 2. POST > http://localhost:8080/api/decrypt. Ensure that request header is using (Authorization Type) API key 
 
 Step 3. Add X-API-key to header. (API key from above configuration)
+![](./images/X-API-Key.png)
 
 Step 4. Copy paste the following request body (ContentType : application/json) similar to below: 
 ```
@@ -84,11 +104,30 @@ Step 4. Copy paste the following request body (ContentType : application/json) s
     "ciphertext": "EPSCloud_DB_KEY_PASSWORD_IN_PLAINTEXT"
 }]
 ```
-Step 5. Error Handling: 
-Status code : 401 [Invalid API Key Name]
-Status code : 401 [Invalid App Name]
-Status code : 401 [Invalid API Key]
-Status code : 401  JSONObject["apikeyname"] not found.
+[Optional] Using curl to decrypt.
+```
+curl --location 'http://localhost:8080/api/decrypt' \
+--header 'Content-Type: application/json' \
+--header 'x-api-key: nLZg5i1E29cipjz' \
+--data '[{
+    "appname": "EPS-App",
+    "apikeyname": "EPS_cloud_db_key",
+    "ciphertext": "FLw83lfs6Em0YXlClTH9FlslyN7ppWuVFb9VJ0EMcN2jET1zRenVN4VsOJo8V47V"
+}]'
+```
+
+Exepected Result
+![](./images/POST-Decrypt.png)
+
+Error Handling: 
+
+| Status Code  | Response Message | Screenshot | 
+| ------------- | ------------- | ------------- | 
+| 401 (Unauthorized) | Invalid API Key Name | ![](./images/X-API-Key.png) |
+| 401 (Unauthorized) | Invalid App Name | | 
+| 401 (Unauthorized) | Invalid API Key | | 
+| 401 (Unauthorized) | JSONObject["apikeyname"] not found | | 
+
 ## Limitation
 
  - IV is declared as global variable and stored in the memory. Encrypted string will not be able to be decrypted if API server is restarted 
