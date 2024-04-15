@@ -127,14 +127,12 @@ curl --location 'http://localhost:8080/api/decrypt' \
 | 401 (Unauthorized) | Invalid API Key |
 | 401 (Unauthorized) | JSONObject["apikeyname"] not found |
 
-### Invalid API Key Name
-![](./images/InvalidKeyName.png)
-### Invalid App Name
-![](./images/InvalidAppName.png)
-### Invalid API Key
-![](./images/InvalidAPIKey.png)
-### Invalid API Key Name
-![](./images/RequestBody_Missing_APIKeyName.png)
+
+![Invalid API Key Name](./images/InvalidKeyName.png)
+![Invalid App Name](./images/InvalidAppName.png)
+![Invalid API Key](./images/InvalidAPIKey.png)
+![Invalid API Key Name](./images/RequestBody_Missing_APIKeyName.png)
+
 
 ## Limitation
 
