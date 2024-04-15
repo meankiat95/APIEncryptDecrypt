@@ -76,15 +76,6 @@ Exepected Result
 
 ![Exepected Result](./images/POST-Encrypt.png)
 
-Error Handling: 
-
-| Status Code  | Response Message |
-| ------------- | ------------- |
-| 401 (Unauthorized) | Invalid API Key Name |
-| 401 (Unauthorized) | Invalid App Name |
-| 401 (Unauthorized) | Invalid API Key |
-| 401 (Unauthorized) | JSONObject["apikeyname"] not found |
-
 ### Decryption
 
 Step 1. To decrypt a cipher text, please ensure that the following fields are created in H2 Database:
