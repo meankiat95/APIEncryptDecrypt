@@ -116,6 +116,7 @@ curl --location 'http://localhost:8080/api/decrypt' \
     "ciphertext": "FLw83lfs6Em0YXlClTH9FlslyN7ppWuVFb9VJ0EMcN2jET1zRenVN4VsOJo8V47V"
 }]'
 ```
+Exepected Result
 ![Exepected Result](./images/POST-Decrypt.png)
 
 ## Error Handling
