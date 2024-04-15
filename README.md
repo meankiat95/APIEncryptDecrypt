@@ -48,11 +48,9 @@ Step 1. To encrypt a plain text, please ensure that the following fields are cre
 - API Key 
 
 Step 2. POST > http://localhost:8080/api/encrypt.
-Ensure that request header is using (Authorization Type) API key 
-![](./images/POST-header-Encrypt.png)
 
 Step 3. Add X-API-key to header. (API key from above configuration)
-![](./images/X-API-Key.png)
+![](./images/POST-header-Encrypt.png)
 
 Step 4. Copy paste the following request body (ContentType : application/json) similar to below: 
 ```
@@ -86,11 +84,9 @@ Step 1. To decrypt a cipher text, please ensure that the following fields are cr
 - API Key  
 
 Step 2. POST > http://localhost:8080/api/decrypt. 
-Ensure that request header is using (Authorization Type) API key 
-![](./images/POST-header-Decrypt.png)
 
 Step 3. Add X-API-key to header. (API key from above configuration)
-![](./images/X-API-Key.png)
+![](./images/POST-header-Decrypt.png)
 
 Step 4. Copy paste the following request body (ContentType : application/json) similar to below: 
 ```
